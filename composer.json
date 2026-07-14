@@ -1,0 +1,19 @@
+{
+    "name": "arjunyuvanesh/common-auth",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Arjunyuvanesh\\CommonAuth\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Arjun Yuvanesh",
+            "email": "arjun15247@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "spatie/laravel-permission": "^6.0"
+    }
+}

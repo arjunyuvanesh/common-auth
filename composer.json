@@ -6,6 +6,7 @@
             "Arjunyuvanesh\\CommonAuth\\": "src/"
         }
     },
+    "license": "MIT",
     "authors": [
         {
             "name": "Arjun Yuvanesh",

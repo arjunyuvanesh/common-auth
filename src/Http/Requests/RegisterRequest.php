@@ -27,7 +27,7 @@ class RegisterRequest extends FormRequest
         // We provide a fallback array just in case the config is missing.
         $rules = config('common-auth.registration_fields', [
             'name'     => 'required|string|max:255',
-            'email'    => 'required|string|email|max:255|unique:common_auth_users',
+            'email'    => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
         ]);
 

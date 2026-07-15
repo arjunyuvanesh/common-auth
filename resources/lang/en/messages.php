@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'login_success'    => 'Successfully logged in.',
+    'login_failed'     => 'The provided credentials do not match our records.',
+    'logout_success'   => 'Successfully logged out.',
+    'register_success' => 'Registration successful.',
+    'register_failed'  => 'An error occurred during registration. Please try again later.',
+    'user_not_found'   => 'We could not find an account matching those details.',
+    'incorrect_password' => 'The password you entered is incorrect.',
+    'email_taken'      => 'This email address is already in use.',
+    'mobile_taken'     => 'This mobile number is already registered.',
+    'username_taken'   => 'This username is already taken. Please try another.',
+    'email_verified'   => 'Your email address has been successfully verified.',
+    'invalid_otp'      => 'The OTP you entered is invalid or has expired.',
+    'email_already_verified' => 'Your email is already verified.',
+    'verification_sent'=> 'A fresh verification link/OTP has been sent to your email address.',
+    'verify_email_subject' => 'Verify Your Email Address',
+    'verify_email_intro' => 'Please verify your email address to secure your account.',
+    'verify_email_otp_label' => 'Your Verification OTP is:',
+    'verify_email_otp_expires' => 'This OTP will expire in 15 minutes.',
+    'verify_email_action' => 'Verify Email Address',
+    'password_changed' => 'Your password has been changed successfully.',
+    'profile_updated'  => 'Your profile has been updated successfully.',
+    'account_deleted'  => 'Your account has been permanently deleted.',
+];

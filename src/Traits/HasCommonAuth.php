@@ -20,4 +20,19 @@ trait HasCommonAuth
     {
         return $this->username ?? $this->email ?? $this->mobile;
     }
+
+    /**
+     * Send the email verification notification.
+     * We override this to seamlessly support OTP, Links, or Both based on our package config!
+     *
+     * @return void
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $method = config('common-auth.verification_method', 'none');
+        
+        if ($method !== 'none') {
+            $this->notify(new \Arjunyuvanesh\CommonAuth\Notifications\VerifyEmailNotification());
+        }
+    }
 }

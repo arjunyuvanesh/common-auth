@@ -10,9 +10,10 @@ interface AuthServiceInterface
      * Attempt to log a user in using email, mobile, or username.
      *
      * @param array $credentials
+     * @param bool $remember
      * @return bool
      */
-    public function attemptLogin(array $credentials): bool;
+    public function attemptLogin(array $credentials, bool $remember = false): bool;
 
     /**
      * Register a new user dynamically and assign the default Spatie role.

@@ -27,25 +27,43 @@ class RegisterController extends Controller
             event(new Registered($user));
 
             if ($request->wantsJson()) {
-                return response()->json([
+                $payload = [
                     'success' => true,
-                    'message' => 'Registration successful.',
-                    'user'    => $user
-                ], 201);
+                    'message' => __('common-auth::messages.register_success'),
+                    'user'    => new \Arjunyuvanesh\CommonAuth\Http\Resources\UserResource($user)
+                ];
+
+                // Optional Laravel Sanctum support for Mobile Apps
+                if (method_exists($user, 'createToken')) {
+                    $payload['token'] = $user->createToken('auth_token')->plainTextToken;
+                }
+
+                return response()->json($payload, 201);
             }
 
             return redirect()->intended(config('common-auth.redirects.register', '/home'))
-                             ->with('success', 'Registration successful.');
+                             ->with('success', __('common-auth::messages.register_success'));
 
-        } catch (Exception $e) {
+        } catch (\Arjunyuvanesh\CommonAuth\Exceptions\RegistrationFailedException $e) {
             if ($request->wantsJson()) {
                 return response()->json([
                     'success' => false,
-                    'message' => $e->getMessage()
+                    'message' => $e->getMessage() // This message is already localized from the Service
                 ], 400);
             }
 
             return back()->withInput()->withErrors(['error' => $e->getMessage()]);
+            
+        } catch (Exception $e) {
+            // Fallback for any other unexpected system crashes
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('common-auth::messages.register_failed')
+                ], 500);
+            }
+
+            return back()->withInput()->withErrors(['error' => __('common-auth::messages.register_failed')]);
         }
     }
 }

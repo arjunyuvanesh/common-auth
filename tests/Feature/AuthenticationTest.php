@@ -31,9 +31,22 @@ class AuthenticationTest extends TestCase
             'password_confirmation' => 'securePassword123!',
         ]);
 
-        // Assert we get a 201 Created response
+        // Assert we get a 201 Created response and STRICTLY verify the UserResource format!
         $response->assertStatus(201)
-                 ->assertJsonFragment(['success' => true]);
+                 ->assertJsonFragment(['success' => true])
+                 ->assertJsonMissing(['password', 'email_verified_at']) // Security: Prove sensitive data is hidden
+                 ->assertJsonStructure([
+                     'success',
+                     'message',
+                     'user' => [
+                         'id',
+                         'name',
+                         'email',
+                         'username',
+                         'mobile',
+                         'created_at'
+                     ]
+                 ]);
 
         // Assert the user was actually inserted into the database
         $this->assertDatabaseHas('users', [

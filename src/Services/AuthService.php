@@ -16,20 +16,38 @@ class AuthService implements AuthServiceInterface
      * Attempt to log a user in using email, mobile, or username.
      *
      * @param array $credentials
+     * @param bool $remember
      * @return bool
      */
-    public function attemptLogin(array $credentials): bool
+    public function attemptLogin(array $credentials, bool $remember = false): bool
     {
         $loginField = $credentials['login'];
         $password   = $credentials['password'];
         
         $fieldType = $this->determineLoginField($loginField);
         $guard = config('common-auth.guard', 'web');
+        $userModelClass = config('auth.providers.users.model', '\\App\\Models\\User');
 
-        return Auth::guard($guard)->attempt([
-            $fieldType => $loginField,
-            'password' => $password
-        ]);
+        // 1. Check if the user exists
+        $user = $userModelClass::where($fieldType, $loginField)->first();
+
+        if (!$user) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'login' => __('common-auth::messages.user_not_found')
+            ]);
+        }
+
+        // 2. Check if the password is correct
+        if (!Hash::check($password, $user->password)) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'password' => __('common-auth::messages.incorrect_password')
+            ]);
+        }
+
+        // 3. Log the user in (with optional Remember Me support)
+        Auth::guard($guard)->login($user, $remember);
+        
+        return true;
     }
 
     /**
@@ -64,9 +82,9 @@ class AuthService implements AuthServiceInterface
             });
             
         } catch (Exception $e) {
-            // Log the exact error for server admins, throw a safe error for the frontend
+            // Log the exact error for server admins, throw a safe custom error for the frontend
             Log::error('CommonAuth Registration Failed: ' . $e->getMessage());
-            throw new Exception('An error occurred during registration. Please try again later.');
+            throw new \Arjunyuvanesh\CommonAuth\Exceptions\RegistrationFailedException(__('common-auth::messages.register_failed'));
         }
     }
 

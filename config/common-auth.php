@@ -43,4 +43,26 @@ return [
     */
     'default_role' => 'user',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Email Verification Method
+    |--------------------------------------------------------------------------
+    |
+    | When a user registers, you can require them to verify their email.
+    | Supported values: "link", "otp", "both", or "none" (if you want to disable it).
+    |
+    */
+    'verification_method' => 'both',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Dynamic Rate Limiting (Security)
+    |--------------------------------------------------------------------------
+    |
+    | To protect against brute-force hacker attacks, the package limits the 
+    | number of login attempts a single IP address can make per minute.
+    |
+    */
+    'rate_limit' => 6,
+
 ];
